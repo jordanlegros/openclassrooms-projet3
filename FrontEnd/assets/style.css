@@ -52,6 +52,7 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	background-color: #FFFEF8;
 }
 header {
 	display: flex;
@@ -98,6 +99,13 @@ nav li {
 li:hover {
 	color: #B1663C;
 }
+
+a{
+	text-decoration: none;
+	color : black;
+}
+
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -197,7 +205,7 @@ footer nav ul {
 
 .filter-button{
 	padding: 10px 20px;
-	background-color: white;
+	background-color: #FFFEF8;
 	border-radius: 20px;
 	border: 1px solid #1D6154;
 	font-family: 'Syne';
@@ -206,11 +214,87 @@ footer nav ul {
 
 .filter-button:hover{
 	background-color:#1D6154 ;
-	color: white;
+	color: #FFFEF8
 }
 
 .filter-button active{
 	background-color:#1D6154 ;
+	color : #FFFEF8
+}
+
+main{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.login{
+	padding: 10%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 400px;
+	gap: 30px;
+	
+}
+
+.login-title{
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 30px;
+	color :#1D6154;
+}
+
+.login-form{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+	width: 100%;
+}
+
+.login-form label{
+	font-family: Work Sans;
+	font-size: 14px;
+	font-weight: 500;
+	text-align: left;
+
+}
+
+.login-form input{
+	height: 40px;
+	border: none;
+	box-shadow: 0px 4px 14px 0px #00000017;
+
+}
+
+.login-form button{
+	width: 180px;
+	height: 35px;
+	border-radius: 60px;
+	border: none;
+	background-color: #1D6154;
+	font-family: Syne;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
 	color : white;
+
+}
+
+.login-form-email, .login-form-password{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+}
+
+.login-forgot-password{
+	font-family: Work Sans;
+	font-size: 14px;
+	font-weight: 500;
+	text-decoration: underline;
+	color : #3D3D3D;
+
 }
 
