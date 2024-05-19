@@ -7,22 +7,35 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+	integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" >
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script src = "/FrontEnd/projects.js"></script>
-	
+	<script src = "/FrontEnd/login.js"></script>
+	<script src = "/FrontEnd/modal.js"></script>
+
 </head>
 <body>
 <header>
-	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-	<nav>
-		<ul>
-			<li><a href = "index.html">projets</a></li>
-			<li>contact</li>
-			<li><a href="login.html">login</a></li>
-			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
-		</ul>
-	</nav>
+	<div class="login-black-bar" aria-hidden="true">
+		<i class="fa-regular fa-pen-to-square"></i>
+		Mode édition
+		
+	</div>
+	<div class="logo-and-nav">
+		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+		<nav>
+			<ul>
+				<li><a href = "index.html">projets</a></li>
+				<li>contact</li>
+				<li><a class="login-button" href="login.html">login</a></li>
+				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+			</ul>
+		</nav>
+	</div>
+	
 </header>
 <main>
 	<section id="introduction">
@@ -37,7 +50,11 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div class="projets-bouton-modifier" aria-hidden="true">
+			<h2>Mes Projets</h2>
+			<button class="edit-button"><i class="fa-regular fa-pen-to-square"></i>Modifier</button>
+		</div>
+		
 		<div class="filters">
 			<button class="filter-button" data-filter="all">Tous</button>
 			<button class="filter-button" data-filter="Appartements">Appartements</button>
@@ -61,6 +78,16 @@
 			<input type="submit" value="Envoyer">
 		</form>
 	</section>
+	<aside class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal" style="display: none;">
+		<div class="modal-wrapper">
+			<h2 id="title-modal">Galerie photo</h2>
+			<button  id="xmark"><i class="fa-solid fa-xmark fa-2xl"></i></button>
+			<div class="galerie-photo-modal">
+
+			</div>
+			<button class="button-ajouter-modal"> Ajouter Photo</button>
+		</div>
+	</aside>
 </main>
 
 <footer>

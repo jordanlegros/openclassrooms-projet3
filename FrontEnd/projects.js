@@ -51,4 +51,8 @@ function displayProjects(projects) {
     });
 }
 
-GetProjectData();
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    GetProjectData();
+});

@@ -1,6 +1,7 @@
 let errorMessageDisplayed = false;
 
 async function ajoutListenerLogin() {
+    console.log("ajout");
     const formLogin = document.querySelector(".login-form");
     formLogin.addEventListener("submit", async function (event) {
     // Désactivation du comportement par défaut du navigateur
@@ -23,8 +24,7 @@ async function ajoutListenerLogin() {
             const loginResponse = await reponse.json();
             const token = loginResponse.token;
             console.log(token);
-
-            window.localStorage.setItem("token", token);
+            window.sessionStorage.setItem("token", token);
             window.location.href = "index.html";
         } else {
             if(!errorMessageDisplayed){
@@ -42,8 +42,41 @@ async function ajoutListenerLogin() {
     });
  }
 
+ function checkLoginStatus() {
+    const token = window.sessionStorage.getItem("token");
+    const loginButton = document.querySelector(".login-button");
+    const editButton = document.querySelector(".edit-button");
+    const editBlackBar = document.querySelector(".login-black-bar")
+
+    if (token) {
+        // Si un token est présent, changer le texte du bouton en "Logout"
+        loginButton.innerText = "Logout";
+
+        // Ajouter un écouteur d'événement pour gérer la déconnexion
+        loginButton.addEventListener("click", function() {
+            // Supprimer le token du sessionStorage
+            window.sessionStorage.removeItem("token");
+            // Recharger la page pour refléter les changements
+            window.location.reload();
+        });
+
+        editButton.style.display = "";
+        editBlackBar.style.display = "";
+    } else {
+        // Si pas de token, s'assurer que le bouton affiche "Login"
+        loginButton.innerText = "Login";
+
+        
+        editButton.style.display = "none";
+        editBlackBar.style.display = "none";
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    ajoutListenerLogin(); // Appel de votre fonction une fois que le DOM est chargé
+    
+    if (window.location.pathname.endsWith("login.html")) {
+        ajoutListenerLogin(); // Appel de la fonction uniquement sur la page login.html
+    }else{
+        checkLoginStatus();
+    }
 });
- 
- 
