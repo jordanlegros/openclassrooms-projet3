@@ -1,22 +1,85 @@
 const openModal = function(e){
-    e.preventDefault
+    e.preventDefault();
     GetProjectDataModal();
 
     const modal=document.querySelector(".modal");
     modal.style.display="";
+
+    const galleryMenu = document.querySelector(".modal-gallery-photo");
+    galleryMenu.style.display="";
+    const uploadMenu = document.querySelector(".modal-ajouter-photo");
+    uploadMenu.style.display="none";
+}
+
+const closeModal = function(e){
+    e.preventDefault();
+    const modal=document.querySelector(".modal");
+    modal.style.display="none";
+    
+}
+
+const openUploadMenu = function(e){
+    e.preventDefault();
+    const galleryMenu = document.querySelector(".modal-gallery-photo");
+    galleryMenu.style.display="none";
+    const uploadMenu = document.querySelector(".modal-ajouter-photo");
+    uploadMenu.style.display="";
+}
+
+const openGalleryMenu = function(e){
+    e.preventDefault();
+    const galleryMenu = document.querySelector(".modal-gallery-photo");
+    galleryMenu.style.display="";
+    const uploadMenu = document.querySelector(".modal-ajouter-photo");
+    uploadMenu.style.display="none";
 }
 
 document.addEventListener("DOMContentLoaded", function()  {
+    const modal = document.querySelector(".modal");
+    const modalWrapper = document.querySelector(".modal-wrapper");
     const button = document.querySelector(".edit-button");
-    
+    const xmarkButtons = document.querySelectorAll(".xmark");
+    const ajouterImageButton = document.querySelector(".button-ajouter-modal");
+    const comeBackToGalleryButton = document.querySelector("#comeBackToGalleryButton");
+
     if (button) {
-        console.log("Le bouton a été trouvé, ajout de l'écouteur d'événement.");
         button.addEventListener("click", openModal); // Passez la référence à la fonction
     } else {
-        console.error("Le bouton avec la classe 'edit-button' n'a pas été trouvé dans le DOM.");
+        console.log("Le bouton avec la classe 'edit-button' n'a pas été trouvé dans le DOM.");
     }
+
+    xmarkButtons.forEach(xmarkButton => {
+        if(xmarkButton){
+            xmarkButton.addEventListener("click", closeModal);
+        }else {
+            console.log("le bouton xmark n'est pas dans le DOM");
+        }
+    });
+
+    if(ajouterImageButton){
+        ajouterImageButton.addEventListener("click", openUploadMenu);
+    }else{
+        console.log("pas de bouton Ajouter Image");
+    }
+
+    if(comeBackToGalleryButton){
+        comeBackToGalleryButton.addEventListener("click", openGalleryMenu);
+    }
+
+    modal.addEventListener("click", function(e) {
+        if (e.target === modal) { // Assurez-vous que le clic est sur le modal, pas sur son contenu
+            closeModal(e);
+        }
+    });
+
+    modalWrapper.addEventListener("click", function(e) {
+        e.stopPropagation();
+    });
+   
     
 });
+
+
 
 
 

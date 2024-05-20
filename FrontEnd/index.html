@@ -80,12 +80,45 @@
 	</section>
 	<aside class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal" style="display: none;">
 		<div class="modal-wrapper">
-			<h2 id="title-modal">Galerie photo</h2>
-			<button  id="xmark"><i class="fa-solid fa-xmark fa-2xl"></i></button>
-			<div class="galerie-photo-modal">
+			<div class="modal-gallery-photo" >
+				<h2 class="title-modal">Galerie photo</h2>
+				<button  class="xmark"><i class="fa-solid fa-xmark "></i></button>
+				<div class="galerie-photo-modal">
 
+				</div>
+				<button class="button-ajouter-modal"> Ajouter Photo</button>
 			</div>
-			<button class="button-ajouter-modal"> Ajouter Photo</button>
+
+			<div class="modal-ajouter-photo" style="display: none;">
+				<h2 class="title-modal">Ajout photo</h2>
+				<button  class="xmark"><i class="fa-solid fa-xmark "></i></button>
+				<i class="fa-solid fa-arrow-left" id="comeBackToGalleryButton"></i>
+				<div class="modal-image-upload">
+					<form>
+						<i id="image-icon" class="fa-regular fa-image fa-2xl"></i>
+						<label for="imageUpload">+ Ajouter photo</label>
+						<input type="file" id="imageUpload" name="imageUpload" accept="image/*" style="display: none;">
+						<p>jpg. png : 4mo max</p>
+					</form>
+				</div>
+				<form class="modal-inputs" >
+					<div class="modal-input">
+						<label for="title">Titre</label>
+						<input type="text" id="title" name="title" placeholder="">
+					</div>
+					<div class="modal-input">
+						<label for="choices">Catégorie</label>
+						<select id="choices" name="choices" >
+							<option value=""></option>
+							<option value="Objets">Objets</option>
+							<option value="Appartements">Appartements</option>
+							<option value="HotelsEtRestaurants">Hotels & restaurants</option>
+						</select>
+					</div>
+				</form>
+				<button id="modal-valider-bouton"> Valider</button>
+				
+			</div>
 		</div>
 	</aside>
 </main>
