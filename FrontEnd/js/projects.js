@@ -1,14 +1,18 @@
 async function GetProjectData() {
 
     //permet de récupérer les données des projets et de filtrer les données reçues grâce aux boutons filtres
-
-
     const response = await fetch('http://localhost:5678/api/works');
     const data = await response.json();
 
     displayProjects(data);
 
     const filterButtons = document.querySelectorAll('.filter-button');
+    const allButton = document.querySelector('.filter-button[data-filter="all"]');
+
+    // Définit le bouton 'all' comme actif par défaut
+    allButton.classList.add('active');
+
+    //application des filtres au clic sur le bouton
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
             const filter = button.getAttribute('data-filter');
@@ -30,9 +34,10 @@ async function GetProjectData() {
     });
 }
 
+
+// permet d'afficher les données des projets filtrés
 function displayProjects(projects) {
 
-    // permet d'afficher les données des projets filtrés
 
     const gallery = document.querySelector(".gallery");
     gallery.innerHTML = '';
@@ -52,7 +57,7 @@ function displayProjects(projects) {
 }
 
 
-
+//au chargement de la page, on charge les projets
 document.addEventListener("DOMContentLoaded", () => {
     GetProjectData();
 });

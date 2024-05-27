@@ -1,11 +1,12 @@
 
 let errorMessageDisplayed = false;
 
+
 async function ajoutListenerLogin() {
-    console.log("ajout");
     const formLogin = document.querySelector(".login-form");
+
+    //Ajout d'un event de type submit sur le bouton de login
     formLogin.addEventListener("submit", async function (event) {
-    // Désactivation du comportement par défaut du navigateur
     event.preventDefault();
     const loginInfo = {
         email: event.target.querySelector("[name=email]").value,
@@ -14,6 +15,8 @@ async function ajoutListenerLogin() {
 
 
      const chargeUtile = JSON.stringify(loginInfo);
+
+
      // Appel de la fonction fetch avec toutes les informations nécessaires
      const reponse = await fetch("http://localhost:5678/api/users/login", {
             method: "POST",
@@ -25,6 +28,8 @@ async function ajoutListenerLogin() {
             const loginResponse = await reponse.json();
             const token = loginResponse.token;
             console.log(token);
+
+            //enregistrement du bearer dans le sessionStorage
             window.sessionStorage.setItem("token", token);
             window.location.href = "index.html";
         } else {
@@ -43,6 +48,8 @@ async function ajoutListenerLogin() {
     });
  }
 
+
+ //Vérifie si on est authentifié pour mettre à jour les éléments sur la page
  function checkLoginStatus() {
     const token = window.sessionStorage.getItem("token");
     const loginButton = document.querySelector(".login-button");
@@ -73,6 +80,8 @@ async function ajoutListenerLogin() {
     }
 }
 
+
+//ajoute un listener que sur la page login, sinon mise à jour de la page selon si on est authentifié ou pas
 document.addEventListener("DOMContentLoaded", () => {
     
     if (window.location.pathname.endsWith("login.html")) {

@@ -1,3 +1,5 @@
+
+//Permet d'ouvrir la modale avec son menu Gallery
 const openModal = function(e){
     e.preventDefault();
     console.log("clik");
@@ -12,6 +14,8 @@ const openModal = function(e){
     uploadMenu.style.display="none";
 }
 
+
+//permet de fermer la modale
 const closeModal = function(e){
     e.preventDefault();
     const modal=document.querySelector(".modal");
@@ -19,6 +23,8 @@ const closeModal = function(e){
     
 }
 
+
+//permet d'ouvrir l'uploadMenu dans la modale pour ajouter des projets
 const openUploadMenu = function(e) {
     e.preventDefault();
     
@@ -29,7 +35,7 @@ const openUploadMenu = function(e) {
     const errorMessage = document.querySelector('.error-message');
     errorMessage.innerText = "";
     
-    // Vérifier et supprimer l'image chargée si elle est présente
+    // Vérifier et supprimer l'image chargée si une est déjà chargée
     const uploadedImage = document.getElementById('uploadedImage');
     const imageUploadForm = document.getElementById('image-upload-form');
     const imageInput = document.getElementById('imageUpload');
@@ -48,6 +54,8 @@ const openUploadMenu = function(e) {
     uploadMenu.style.display = "";
 }
 
+
+//ouverture de la gallery dans la modale
 const openGalleryMenu = function(e){
     e.preventDefault();
     const galleryMenu = document.querySelector(".modal-gallery-photo");
@@ -56,6 +64,8 @@ const openGalleryMenu = function(e){
     uploadMenu.style.display="none";
 }
 
+
+//permet de supprimer un projet depuis la gallery
 const deleteProject = async function(e) {
     e.preventDefault();
     const projectId = e.currentTarget.dataset.projectId; 
@@ -77,7 +87,7 @@ const deleteProject = async function(e) {
             console.log(`Project with ID ${projectId} has been deleted.`);
             // Mettre à jour les données des projets après la suppression réussie
             await GetProjectDataModal();
-            GetProjectData();
+            await GetProjectData();
         } else {
             console.error('Failed to delete project.');
         }
@@ -86,6 +96,8 @@ const deleteProject = async function(e) {
     }
 }
 
+
+//Ajout des eventListener sur les différents boutons et appels de leur fonctions
 document.addEventListener("DOMContentLoaded", function()  {
     const modal = document.querySelector(".modal");
     const modalWrapper = document.querySelector(".modal-wrapper");
@@ -94,12 +106,16 @@ document.addEventListener("DOMContentLoaded", function()  {
     const ajouterImageButton = document.querySelector(".button-ajouter-modal");
     const comeBackToGalleryButton = document.querySelector("#comeBackToGalleryButton");
 
+
+    //bouton modifier
     if (button) {
-        button.addEventListener("click", openModal); // Passez la référence à la fonction
+        button.addEventListener("click", openModal); 
     } else {
         console.log("Le bouton avec la classe 'edit-button' n'a pas été trouvé dans le DOM.");
     }
 
+
+    //bouton croix sur les images dans la gallery
     xmarkButtons.forEach(xmarkButton => {
         if(xmarkButton){
             xmarkButton.addEventListener("click", closeModal);
@@ -108,27 +124,35 @@ document.addEventListener("DOMContentLoaded", function()  {
         }
     });
 
+
+    //Bouton pour naviguer vers le upload Menu
     if(ajouterImageButton){
         ajouterImageButton.addEventListener("click", openUploadMenu);
     }else{
         console.log("pas de bouton Ajouter Image");
     }
 
+    //Bouton pour revenir sur la gallery
     if(comeBackToGalleryButton){
         comeBackToGalleryButton.addEventListener("click", openGalleryMenu);
     }
 
-    modal.addEventListener("click", function(e) {
-        if (e.target === modal) { // Assurez-vous que le clic est sur le modal, pas sur son contenu
-            closeModal(e);
-        }
-    });
+    //Si clique sur les bords de la modale, on la ferme
+    if(modal){
+        modal.addEventListener("click", function(e) {
+            if (e.target === modal) { 
+                closeModal(e);
+            }
+        });
+    }
 
+
+    //protège la fermeture de la modale si on clique sur son contenu
     modalWrapper.addEventListener("click", function(e) {
         e.stopPropagation();
     });
    
-
+    //chargement d'une image dans l'input et son affichage
     document.getElementById('imageUpload').addEventListener('change', function(event) {
         const input = event.target;
         const file = input.files[0];
@@ -146,6 +170,8 @@ document.addEventListener("DOMContentLoaded", function()  {
         }
     });
 
+
+    //Ajout d'un nouvel élément dans la gallery, depuis la modale
     document.getElementById('modal-valider-bouton').addEventListener('click', async function(e) {
         e.preventDefault();
     
@@ -153,28 +179,45 @@ document.addEventListener("DOMContentLoaded", function()  {
         const titleInput = document.getElementById('title').value;
         const categoryInput = document.getElementById('choices').value;
     
-        // Effacer les messages précédents
+        // Gestion des messages d'erreurs
         const errorMessage = document.querySelector('.error-message');
         errorMessage.innerText = "";
     
         // Validate inputs
         if (!imageInput.files.length) {
-            errorMessage.innerText  = "Aucune image sélectionnée";
-            return;
-        }
-        if (!titleInput) {
-            errorMessage.innerText  = "Le titre est requis";
-            return;
-        }
-        if (!categoryInput) {
-            errorMessage.innerText  = "La catégorie est requise";
+            errorMessage.innerText = "Aucune image sélectionnée";
             return;
         }
     
+        const file = imageInput.files[0];
+        const validImageTypes = ['image/jpeg', 'image/png'];
+        const maxFileSize = 4 * 1024 * 1024; // 4 MB in bytes
+    
+        if (!validImageTypes.includes(file.type)) {
+            errorMessage.innerText = "Le fichier doit être au format JPG ou PNG";
+            return;
+        }
+    
+        if (file.size > maxFileSize) {
+            errorMessage.innerText = "Le fichier ne doit pas dépasser 4 Mo";
+            return;
+        }
+    
+        if (!titleInput) {
+            errorMessage.innerText = "Le titre est requis";
+            return;
+        }
+    
+        if (!categoryInput) {
+            errorMessage.innerText = "La catégorie est requise";
+            return;
+        }
+    
+        // Utilisation du formData
         const formData = new FormData();
-        formData.append('image', imageInput.files[0]);
+        formData.append('image', file);
         formData.append('title', titleInput);
-        formData.append('category', categoryInput); // Assuming category needs to be sent as an integer
+        formData.append('category', categoryInput);
     
         const token = sessionStorage.getItem('token');
     
@@ -186,15 +229,16 @@ document.addEventListener("DOMContentLoaded", function()  {
                 },
                 body: formData
             });
-            
+    
             const responseData = await response.text();
             console.log('Response Data:', responseData);
-            
+    
             if (response.ok) {
                 const successMessage = document.querySelector('.error-message');
-                successMessage.innerText  = "Projet créé avec succès";
-                GetProjectDataModal(); // Update the project list
-                GetProjectData();
+                successMessage.innerText = "Projet créé avec succès";
+                // À l'ajout d'un projet, update des gallery dans l'accueil et dans la modale
+                await GetProjectDataModal();
+                await GetProjectData();
             } else {
                 errorMessage.innerText = "Échec de la création du projet";
             }
@@ -210,10 +254,10 @@ document.addEventListener("DOMContentLoaded", function()  {
 
 
 
-
+//Affichage des projets existants dans la modale
 async function GetProjectDataModal() {
 
-    //permet de récupérer les données des projets et de filtrer les données reçues grâce aux boutons filtres
+    
     const response = await fetch('http://localhost:5678/api/works');
     const data = await response.json();
 
@@ -222,14 +266,14 @@ async function GetProjectDataModal() {
 }
 
 function displayProjectsModal(projects) {
-    // Permet d'afficher les données des projets filtrés
+
 
     const gallery = document.querySelector(".galerie-photo-modal");
 
     // Supprimer tous les enfants de la galerie existante
     gallery.innerHTML = '';
 
-    // Ajouter les nouveaux projets à la galerie
+    // Ajouter les nouveaux projets à la galerie de la modale
     projects.forEach(project => {
         // Créer un conteneur pour l'image et le bouton
         const container = document.createElement("div");
@@ -238,6 +282,7 @@ function displayProjectsModal(projects) {
         const imageElement = document.createElement("img");
         imageElement.src = project.imageUrl;
 
+        //Ajout du deleteButton
         const deleteButton = document.createElement("button");
         deleteButton.type = 'button';
         deleteButton.dataset.projectId = project.id;
