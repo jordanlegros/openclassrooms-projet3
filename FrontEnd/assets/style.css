@@ -107,6 +107,7 @@ gap: 50px;
 	font-size: 14px;
 	font-weight: 400;
 	text-align: center;
+	cursor: pointer; 
 }
 
 
@@ -261,6 +262,7 @@ footer nav ul {
 	border: 1px solid #1D6154;
 	font-family: 'Syne';
 	color : #1D6154 ;
+	cursor: pointer; 
 }
 
 .filter-button:hover{
@@ -389,6 +391,7 @@ main{
 	border:none;
 	top: 30px;
 	right: 30px;
+	cursor: pointer; 
 	
 }
 
@@ -406,6 +409,8 @@ main{
 	text-align: center;
 	color: #FFFFFF;
 	border: none;
+	cursor: pointer; 
+
 }
 
 .galerie-photo-modal{
@@ -473,7 +478,6 @@ main{
 	color: #B9C5CC;
 	background-color: #E8F1F6;
 	border-radius: 3px;
-	padding: 30px 0;
 	margin: 30px 0px;
 }
 
@@ -563,7 +567,7 @@ main{
 	height: 36px;
 	border-radius: 60px;
 	border: none;
-	margin: 50px 0;
+	margin-bottom: 20px;
 	font-family: Syne;
 	font-size: 14px;
 	font-weight: 700;
@@ -581,6 +585,19 @@ main{
 	font-size: 30px;
 }
 
+#image-upload-form{
+	padding: 30px 0px;
+}
+
+#uploadedImage{
+	max-width: 100%; 
+	height: 150px;
+	object-fit: contain;
+}
+
+.error-message{
+	padding: 10px 0;
+}
 
 
 

@@ -12,9 +12,9 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer" >
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<script src = "/FrontEnd/projects.js"></script>
-	<script src = "/FrontEnd/login.js"></script>
-	<script src = "/FrontEnd/modal.js"></script>
+	<script src = "/js/projects.js"></script>
+	<script src = "/js/login.js"></script>
+	<script src = "/js/modal.js"></script>
 
 </head>
 <body>
@@ -94,12 +94,13 @@
 				<button  class="xmark"><i class="fa-solid fa-xmark "></i></button>
 				<i class="fa-solid fa-arrow-left" id="comeBackToGalleryButton"></i>
 				<div class="modal-image-upload">
-					<form>
+					<form id="image-upload-form">
 						<i id="image-icon" class="fa-regular fa-image fa-2xl"></i>
 						<label for="imageUpload">+ Ajouter photo</label>
 						<input type="file" id="imageUpload" name="imageUpload" accept="image/*" style="display: none;">
 						<p>jpg. png : 4mo max</p>
 					</form>
+					<img id="uploadedImage" style="display: none;"  alt="Uploaded Image"/>
 				</div>
 				<form class="modal-inputs" >
 					<div class="modal-input">
@@ -110,12 +111,13 @@
 						<label for="choices">Catégorie</label>
 						<select id="choices" name="choices" >
 							<option value=""></option>
-							<option value="Objets">Objets</option>
-							<option value="Appartements">Appartements</option>
-							<option value="HotelsEtRestaurants">Hotels & restaurants</option>
+							<option value="1">Objets</option>
+							<option value="2">Appartements</option>
+							<option value="3">Hotels & restaurants</option>
 						</select>
 					</div>
 				</form>
+				<p class="error-message"></p>
 				<button id="modal-valider-bouton"> Valider</button>
 				
 			</div>

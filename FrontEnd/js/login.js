@@ -1,3 +1,4 @@
+
 let errorMessageDisplayed = false;
 
 async function ajoutListenerLogin() {
