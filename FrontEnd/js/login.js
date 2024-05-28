@@ -54,7 +54,8 @@ async function ajoutListenerLogin() {
     const token = window.sessionStorage.getItem("token");
     const loginButton = document.querySelector(".login-button");
     const editButton = document.querySelector(".edit-button");
-    const editBlackBar = document.querySelector(".login-black-bar")
+    const editBlackBar = document.querySelector(".login-black-bar");
+    const filters = document.querySelector(".filters");
 
     if (token) {
         // Si un token est présent, changer le texte du bouton en "Logout"
@@ -70,6 +71,7 @@ async function ajoutListenerLogin() {
 
         editButton.style.display = "";
         editBlackBar.style.display = "";
+        filters.style.display="none";
     } else {
         // Si pas de token, s'assurer que le bouton affiche "Login"
         loginButton.innerText = "Login";
@@ -77,6 +79,7 @@ async function ajoutListenerLogin() {
         
         editButton.style.display = "none";
         editBlackBar.style.display = "none";
+        filters.style.display="";
     }
 }
 

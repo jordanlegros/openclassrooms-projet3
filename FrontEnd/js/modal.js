@@ -84,7 +84,6 @@ const deleteProject = async function(e) {
         await response.text();
 
         if (response.ok || response.status === 204) {
-            console.log(`Project with ID ${projectId} has been deleted.`);
             // Mettre à jour les données des projets après la suppression réussie
             await GetProjectDataModal();
             await GetProjectData();
@@ -98,46 +97,89 @@ const deleteProject = async function(e) {
 
 
 //Ajout des eventListener sur les différents boutons et appels de leur fonctions
-document.addEventListener("DOMContentLoaded", function()  {
+document.addEventListener("DOMContentLoaded", function() {
     const modal = document.querySelector(".modal");
     const modalWrapper = document.querySelector(".modal-wrapper");
     const button = document.querySelector(".edit-button");
     const xmarkButtons = document.querySelectorAll(".xmark");
     const ajouterImageButton = document.querySelector(".button-ajouter-modal");
     const comeBackToGalleryButton = document.querySelector("#comeBackToGalleryButton");
+    const submitButton = document.getElementById('modal-valider-bouton');
+    const imageInput = document.getElementById('imageUpload');
+    const titleInput = document.getElementById('title');
+    const categoryInput = document.getElementById('choices');
+    const errorMessage = document.querySelector('.error-message');
 
+    // Fonction de validation des entrées pour créer un projet
+    function validateInputs() {
+        errorMessage.innerText = "";
 
-    //bouton modifier
+        if (!imageInput.files.length) {
+            return false;
+        }
+
+        const file = imageInput.files[0];
+        const validImageTypes = ['image/jpeg', 'image/png'];
+        const maxFileSize = 4 * 1024 * 1024; // 4 MB in bytes
+
+        if (!validImageTypes.includes(file.type)) {
+            return false;
+        }
+
+        if (file.size > maxFileSize) {
+            return false;
+        }
+
+        if (!titleInput.value.trim()) {
+            return false;
+        }
+
+        if (!categoryInput.value.trim()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // Fonction de mise à jour de l'état du bouton pour créer un projet
+    function updateButtonState() {
+        if (validateInputs()) {
+            submitButton.classList.add('active');
+        } else {
+            submitButton.classList.remove('active');
+        }
+    }
+
+    // Écouteurs d'événements sur les champs d'entrée pour créer un projet
+    imageInput.addEventListener('change', updateButtonState);
+    titleInput.addEventListener('input', updateButtonState);
+    categoryInput.addEventListener('input', updateButtonState);
+
+    // Ajout des écouteurs d'événements sur les différents boutons et appels de leurs fonctions
     if (button) {
         button.addEventListener("click", openModal); 
     } else {
         console.log("Le bouton avec la classe 'edit-button' n'a pas été trouvé dans le DOM.");
     }
 
-
-    //bouton croix sur les images dans la gallery
     xmarkButtons.forEach(xmarkButton => {
         if(xmarkButton){
             xmarkButton.addEventListener("click", closeModal);
-        }else {
+        } else {
             console.log("le bouton xmark n'est pas dans le DOM");
         }
     });
 
-
-    //Bouton pour naviguer vers le upload Menu
     if(ajouterImageButton){
         ajouterImageButton.addEventListener("click", openUploadMenu);
-    }else{
+    } else {
         console.log("pas de bouton Ajouter Image");
     }
 
-    //Bouton pour revenir sur la gallery
     if(comeBackToGalleryButton){
         comeBackToGalleryButton.addEventListener("click", openGalleryMenu);
     }
 
-    //Si clique sur les bords de la modale, on la ferme
     if(modal){
         modal.addEventListener("click", function(e) {
             if (e.target === modal) { 
@@ -146,13 +188,10 @@ document.addEventListener("DOMContentLoaded", function()  {
         });
     }
 
-
-    //protège la fermeture de la modale si on clique sur son contenu
     modalWrapper.addEventListener("click", function(e) {
         e.stopPropagation();
     });
-   
-    //chargement d'une image dans l'input et son affichage
+
     document.getElementById('imageUpload').addEventListener('change', function(event) {
         const input = event.target;
         const file = input.files[0];
@@ -164,63 +203,30 @@ document.addEventListener("DOMContentLoaded", function()  {
                 const uploadedImage = document.getElementById('uploadedImage');
                 uploadedImage.src = imageUrl;
                 uploadedImage.style.display = 'block';
-                document.getElementById('image-upload-form').style.display='none';
+                document.getElementById('image-upload-form').style.display = 'none';
             };
             reader.readAsDataURL(file);
         }
     });
 
 
-    //Ajout d'un nouvel élément dans la gallery, depuis la modale
+    //création d'un nouveau projet si toutes les conditions sont validées
     document.getElementById('modal-valider-bouton').addEventListener('click', async function(e) {
         e.preventDefault();
-    
-        const imageInput = document.getElementById('imageUpload');
-        const titleInput = document.getElementById('title').value;
-        const categoryInput = document.getElementById('choices').value;
-    
-        // Gestion des messages d'erreurs
-        const errorMessage = document.querySelector('.error-message');
-        errorMessage.innerText = "";
-    
-        // Validate inputs
-        if (!imageInput.files.length) {
-            errorMessage.innerText = "Aucune image sélectionnée";
+
+        if (!validateInputs()) {
+            errorMessage.innerText = "Veuillez remplir tous les champs correctement";
             return;
         }
-    
+
         const file = imageInput.files[0];
-        const validImageTypes = ['image/jpeg', 'image/png'];
-        const maxFileSize = 4 * 1024 * 1024; // 4 MB in bytes
-    
-        if (!validImageTypes.includes(file.type)) {
-            errorMessage.innerText = "Le fichier doit être au format JPG ou PNG";
-            return;
-        }
-    
-        if (file.size > maxFileSize) {
-            errorMessage.innerText = "Le fichier ne doit pas dépasser 4 Mo";
-            return;
-        }
-    
-        if (!titleInput) {
-            errorMessage.innerText = "Le titre est requis";
-            return;
-        }
-    
-        if (!categoryInput) {
-            errorMessage.innerText = "La catégorie est requise";
-            return;
-        }
-    
-        // Utilisation du formData
         const formData = new FormData();
         formData.append('image', file);
-        formData.append('title', titleInput);
-        formData.append('category', categoryInput);
-    
+        formData.append('title', titleInput.value.trim());
+        formData.append('category', categoryInput.value.trim());
+
         const token = sessionStorage.getItem('token');
-    
+
         try {
             const response = await fetch('http://localhost:5678/api/works', {
                 method: 'POST',
@@ -229,14 +235,13 @@ document.addEventListener("DOMContentLoaded", function()  {
                 },
                 body: formData
             });
-    
+
             const responseData = await response.text();
             console.log('Response Data:', responseData);
-    
+
             if (response.ok) {
                 const successMessage = document.querySelector('.error-message');
                 successMessage.innerText = "Projet créé avec succès";
-                // À l'ajout d'un projet, update des gallery dans l'accueil et dans la modale
                 await GetProjectDataModal();
                 await GetProjectData();
             } else {
@@ -246,8 +251,8 @@ document.addEventListener("DOMContentLoaded", function()  {
             errorMessage.innerText = `Erreur: ${error}`;
         }
     });
-    
 });
+
 
 
 

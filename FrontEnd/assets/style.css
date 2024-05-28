@@ -191,6 +191,7 @@ a{
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
+	margin: 30px;
 }
 
 .gallery img {
@@ -574,8 +575,14 @@ main{
 	text-align: center;
 	color: white;
 	background-color: #A7A7A7;
+	cursor: not-allowed;
 	
 
+}
+
+#modal-valider-bouton.active{
+	background-color: #1D6154;
+	cursor: pointer;
 }
 
 #comeBackToGalleryButton{

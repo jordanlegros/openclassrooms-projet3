@@ -5,6 +5,7 @@ async function GetProjectData() {
     const data = await response.json();
 
     displayProjects(data);
+    CreateFilters(data);
 
     const filterButtons = document.querySelectorAll('.filter-button');
     const allButton = document.querySelector('.filter-button[data-filter="all"]');
@@ -61,3 +62,32 @@ function displayProjects(projects) {
 document.addEventListener("DOMContentLoaded", () => {
     GetProjectData();
 });
+
+
+//création des filtres dynamiquement
+function CreateFilters(projects){
+    const filters = projects.map(project => project.category.name);
+    const filtersUniques = [...new Set(filters)];
+    filtersUniques.unshift("all");
+    
+
+    const container = document.querySelector(".filters");
+
+    filtersUniques.forEach(filter => {
+
+        if(filter === "all"){
+            const bouton = document.createElement('button');
+            bouton.classList.add('filter-button');
+            bouton.textContent = "Tout";
+            bouton.setAttribute('data-filter', filter);
+            container.appendChild(bouton);
+        }else {
+            const bouton = document.createElement('button');
+            bouton.classList.add('filter-button');
+            bouton.textContent = filter;
+            bouton.setAttribute('data-filter', filter);
+            container.appendChild(bouton);
+        }
+        
+    })
+}
